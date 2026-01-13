@@ -3,57 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wedding List</title>
+    <title>Wedding Guest Engine</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     
-  
+ 
 </head>
 <body>
 
-<div class="layout">
+<div id="auth-screen">
+    <div class="content-card auth-card">
+        <div class="auth-header">
+            <i data-lucide="sparkles" style="color: var(--brand); margin-bottom: 12px;"></i>
+            <h2 style="margin: 0; font-size: 1.5rem; letter-spacing: -0.025em;">Wedding Engine</h2>
+            <p style="color: var(--text-muted); font-size: 0.875rem;">Gerencie sua lista de forma inteligente</p>
+        </div>
+
+        <div class="auth-tabs tabs-nav">
+            <button id="btn-login-tab" class="tab-trigger active" onclick="switchAuthMode('login')">Entrar</button>
+            <button id="btn-register-tab" class="tab-trigger" onclick="switchAuthMode('register')">Cadastrar</button>
+        </div>
+
+        <div class="auth-form-group">
+            <input type="text" id="username" placeholder="Usuário">
+            <input type="password" id="password" placeholder="Senha">
+            <input type="text" id="couple-input" placeholder="Nome do Casal (ex: Ana & Leo)" style="display: none;">
+            <button class="btn-primary" onclick="processAuth()" id="auth-main-btn">Entrar</button>
+        </div>
+        <p id="auth-error" style="color: var(--danger); font-size: 0.75rem; text-align: center; margin-top: 16px; display: none;"></p>
+    </div>
+</div>
+
+<div id="main-app" class="layout">
     <nav class="navbar">
         <div class="logo">
-            <i data-lucide="sparkles" style="color: var(--brand)"></i>
-            Wedding List
+            <i data-lucide="heart" style="color: var(--brand)"></i>
+            <span id="couple-title">Nome do Casal</span>
         </div>
-        <button onclick="gerarPDF()" class="btn-primary" style="background: white; color: var(--text-main); border: 1px solid var(--border)">
-            <i data-lucide="download"></i>
-            Exportar PDF
-        </button>
+        <div style="display: flex; gap: 12px;">
+            <button onclick="gerarPDF()" class="btn-primary" style="background: white; color: var(--text-main); border: 1px solid var(--border)">
+                <i data-lucide="download"></i> Exportar
+            </button>
+            <button onclick="logout()" class="btn-primary" style="background: #f3f4f6; color: var(--text-muted); padding: 0 12px;">
+                <i data-lucide="log-out"></i>
+            </button>
+        </div>
     </nav>
 
     <div class="stats-grid">
-        <div class="stat-card">
-            <span class="stat-label">Total Cadastrados</span>
-            <span class="stat-value" id="stat-total">0</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Confirmados (Sim)</span>
-            <span class="stat-value" id="stat-sim" style="color: var(--success)">0</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Adultos</span>
-            <span class="stat-value" id="stat-adultos">0</span>
-        </div>
-        <div class="stat-card">
-            <span class="stat-label">Crianças</span>
-            <span class="stat-value" id="stat-criancas">0</span>
-        </div>
+        <div class="stat-card"><span class="stat-label">Total</span><span class="stat-value" id="stat-total">0</span></div>
+        <div class="stat-card"><span class="stat-label">Confirmados</span><span class="stat-value" id="stat-sim" style="color: var(--success)">0</span></div>
+        <div class="stat-card"><span class="stat-label">Adultos</span><span class="stat-value" id="stat-adultos">0</span></div>
+        <div class="stat-card"><span class="stat-label">Crianças</span><span class="stat-value" id="stat-criancas">0</span></div>
     </div>
 
     <div class="tabs-nav">
-        <button class="tab-trigger active" onclick="switchTab('cadastro')">
-            <i data-lucide="users"></i> Lista
-        </button>
-        <button class="tab-trigger" onclick="switchTab('verificacao')">
-            <i data-lucide="shield-check"></i> Verificação
-        </button>
-        <button class="tab-trigger" onclick="switchTab('aprovados')">
-            <i data-lucide="clipboard-list"></i> Aprovados
-        </button>
+        <button class="tab-trigger active" onclick="switchTab('cadastro')"><i data-lucide="users"></i> Lista</button>
+        <button class="tab-trigger" onclick="switchTab('verificacao')"><i data-lucide="shield-check"></i> Validar</button>
+        <button class="tab-trigger" onclick="switchTab('aprovados')"><i data-lucide="clipboard-list"></i> Aprovados</button>
     </div>
 
     <div id="cadastro" class="tab-content content-card">
@@ -67,22 +76,11 @@
                 <option value="Adulto">Adulto</option>
                 <option value="Criança">Criança</option>
             </select>
-            <button class="btn-primary" onclick="addGuest()">
-                <i data-lucide="plus"></i> Adicionar
-            </button>
+            <button class="btn-primary" onclick="addGuest()"><i data-lucide="plus"></i></button>
         </div>
-        
         <div class="table-wrap">
             <table>
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Relação</th>
-                        <th>Idade</th>
-                        <th>Status</th>
-                        <th></th>
-                    </tr>
-                </thead>
+                <thead><tr><th>Nome</th><th>Relação</th><th>Idade</th><th>Status</th><th></th></tr></thead>
                 <tbody id="guestList"></tbody>
             </table>
         </div>
@@ -95,7 +93,7 @@
     <div id="aprovados" class="tab-content content-card" style="display:none">
         <div class="table-wrap">
             <table id="tabelaFinalPDF">
-                <thead><tr><th>Nome</th><th>Faixa Etária</th><th>Relação</th></tr></thead>
+                <thead><tr><th>Nome</th><th>Idade</th><th>Relação</th></tr></thead>
                 <tbody id="approvedList"></tbody>
             </table>
         </div>
@@ -109,14 +107,11 @@
         <p id="q-text" style="color: var(--text-muted); font-size: 1rem; line-height: 1.6;"></p>
         <div class="quiz-actions">
             <button class="btn-quiz btn-quiz-no" onclick="handleAnswer(false)">Não</button>
-            <button class="btn-quiz btn-quiz-yes" onclick="handleAnswer(true)">Sim, convidar</button>
+            <button class="btn-quiz btn-quiz-yes" onclick="handleAnswer(true)">Sim</button>
         </div>
     </div>
 </div>
 
-
 <script src="script.js"></script>
 </body>
-
 </html>
-
