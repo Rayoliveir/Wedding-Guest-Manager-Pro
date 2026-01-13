@@ -139,6 +139,7 @@ input {
     font-size: 0.875rem;
     outline: none;
     transition: border 0.2s;
+    width: 100%;
 }
 
 select:focus,
@@ -161,6 +162,7 @@ input:focus {
     justify-content: center;
     gap: 8px;
     transition: background 0.2s;
+    height: 40px;
 }
 
 .btn-primary:hover {
@@ -280,4 +282,40 @@ td {
 
 .validation-item:hover {
     border-color: var(--brand);
+}
+
+/* ---------------------------------
+    AUTH EXTENSIONS (Mantendo o Padrão)
+    --------------------------------- */
+#auth-screen {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.auth-card {
+    max-width: 400px;
+    width: 100%;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.auth-tabs {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.auth-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#main-app {
+    display: none;
 }
