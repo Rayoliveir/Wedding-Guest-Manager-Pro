@@ -6,6 +6,9 @@ Uma ferramenta inteligente e sofisticada para gestão e validação lógica de l
 ![Status do Projeto](https://img.shields.io/badge/Status-Finalizado-success?style=flat-square)
 ![Tecnologias](https://img.shields.io/badge/Tech-HTML5%20%7C%20CSS3%20%7C%20JS-blue?style=flat-square)
 
+## Link do projeto
+https://wedding-list-one.vercel.app/
+
 ## 📋 Sobre o Projeto
 
 O **Wedding-Guest-Manager-Pro** foi criado para ajudar noivos a tomarem decisões objetivas sobre quem convidar para o grande dia. Através de um assistente de validação, o sistema analisa cada convidado individualmente com base em padrões de relacionamento e frequência de contato.
